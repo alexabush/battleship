@@ -21,7 +21,7 @@ class Square extends Component {
       <StyledDiv
         color={color}
         border={border}
-        onClick={() => this.props.squareClicked(this.props.position)}
+        // onClick={() => this.props.squareClicked(this.props.position)}
       />
     );
   }

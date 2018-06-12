@@ -17,23 +17,23 @@ class Board extends Component {
       <Row key={rowIndex}>
         {row.map((square, column) => {
           const position = [rowIndex, column];
-          if (this.props.lastMove) {
-            if (
-              this.props.lastMove[0] === position[0] &&
-              this.props.lastMove[1] === position[1]
-            ) {
-              highlight = true;
-            } else {
-              highlight = false;
-            }
-          }
+          // if (this.props.lastMove) {
+          //   if (
+          //     this.props.lastMove[0] === position[0] &&
+          //     this.props.lastMove[1] === position[1]
+          //   ) {
+          //     highlight = true;
+          //   } else {
+          //     highlight = false;
+          //   }
+          // }
           return (
             <Square
               key={column}
               position={position}
               value={square}
-              squareClicked={this.props.squareClicked}
-              highlight={highlight}
+              // squareClicked={this.props.squareClicked}
+              // highlight={highlight}
             />
           );
         })}
