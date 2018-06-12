@@ -17,8 +17,14 @@ const DEFAULT_STATE = {
   }),
   p2Board: Array.from({ length: 10 }, val => {
     return Array.from({ length: 10 }, val => 0);
-  })
-  // lastMove: null
+  }),
+  ships: [
+    { name: 'Carrier', num: 5, remainingHits: 5 },
+    { name: 'Battleship', num: 4, remainingHits: 4 },
+    { name: 'Destroyer', num: 3, remainingHits: 3 },
+    { name: 'Submarine', num: 3.5, remainingHits: 3 },
+    { name: 'Patrol Boat', num: 2, remainingHits: 2 }
+  ]
 };
 
 function randomNum(start, end) {
@@ -97,6 +103,8 @@ class App extends Component {
       const newState = { ...prevState };
       const currentBoard = isPlayer1Turn ? newState.p2Board : newState.p1Board;
       if (this.isHit(currentBoard, position)) {
+        console.log('isHit');
+        this.processHit(currentBoard, position);
         debugger;
         currentBoard[targetRow][targetColumn] = 100;
       } else currentBoard[targetRow][targetColumn] = 10;
@@ -108,25 +116,26 @@ class App extends Component {
   };
 
   isHit = (board, position) => {
-    debugger;
+    console.log('in isHit');
     const square = board[position[0]][position[1]];
     if (square > 0 && square <= 5) {
-      debugger;
       return true;
     } else return false;
+  };
 
-    // debugger;
-    // board.forEach((row, rowIndex) => {
-    //   debugger;
-    //   row.forEach((square, columnIndex) => {
-    //     debugger;
-    //     if (square > 0 && square <= 5) {
-    //       debugger;
-    //       return true;
-    //     }
-    //   });
-    // });
-    // return false;
+  processHit = (board, position) => {
+    console.log('in processHit');
+    const shipNum = board[position[0]][position[1]];
+    this.setState(prevState => {
+      debugger;
+      const newShips = [...prevState.ships];
+      const targetShip = newShips.filter(ship => ship.num === shipNum);
+      newShips[targetShip].remainingHits -= 1;
+      if (newShips[targetShip].remainingHits <= 0) {
+        console.log('ship destroyed');
+      }
+      return { ships: newShips };
+    });
   };
 
   // checkWin = () => {
