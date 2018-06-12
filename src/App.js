@@ -155,20 +155,18 @@ class App extends Component {
 
   checkWin = (isPlayer1Turn, ships) => {
     const isGameOver = ships.every(ship => ship.remainingHits === 0);
-    if (isGameOver && isPlayer1Turn) {
-      return 1;
-    }
+    if (isGameOver && isPlayer1Turn) return 1;
     if (isGameOver && !isPlayer1Turn) return 2;
     return 0;
   };
 
-  // playAgain = () =>
-  //   this.setState(prevState => {
-  //     const newState = JSON.parse(JSON.stringify(DEFAULT_STATE));
-  //     newState.isPlayer1Start = !prevState.isPlayer1Start;
-  //     newState.isPlayer1Turn = newState.isPlayer1Start;
-  //     return newState;
-  //   });
+  playAgain = () =>
+    this.setState(prevState => {
+      const newState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      newState.isPlayer1Start = !prevState.isPlayer1Start;
+      newState.isPlayer1Turn = newState.isPlayer1Start;
+      return newState;
+    });
 
   render() {
     let playStatus;
@@ -182,9 +180,6 @@ class App extends Component {
       case 2:
         playStatus = 'Player 2 Wins!';
         break;
-      case 3:
-        playStatus = 'Stalemate!';
-        break;
     }
     return (
       <div className="App text-center">
@@ -194,9 +189,7 @@ class App extends Component {
           boardId={1}
           squareClicked={this.squareClicked}
           currentTurn={this.state.isPlayer1Turn}
-          // winStatus={this.state.winStatus}
-          // playAgain={this.playAgain}
-          // lastMove={this.state.lastMove}
+          playAgain={this.playAgain}
         />
         <p>Space</p>
         <Board
@@ -204,9 +197,7 @@ class App extends Component {
           boardId={2}
           squareClicked={this.squareClicked}
           currentTurn={this.state.isPlayer1Turn}
-          // winStatus={this.state.winStatus}
-          // playAgain={this.playAgain}
-          // lastMove={this.state.lastMove}
+          playAgain={this.playAgain}
         />
         <p>Ready: {this.state.isPlayer1Turn ? 'Player 1' : 'Player 2'}</p>
         <p>{playStatus}</p>
