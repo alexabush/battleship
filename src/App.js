@@ -155,7 +155,9 @@ class App extends Component {
 
   checkWin = (isPlayer1Turn, ships) => {
     const isGameOver = ships.every(ship => ship.remainingHits === 0);
-    if (isGameOver && isPlayer1Turn) return 1;
+    if (isGameOver && isPlayer1Turn) {
+      return 1;
+    }
     if (isGameOver && !isPlayer1Turn) return 2;
     return 0;
   };
