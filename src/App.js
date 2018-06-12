@@ -96,16 +96,37 @@ class App extends Component {
         return prevState;
       const newState = { ...prevState };
       const currentBoard = isPlayer1Turn ? newState.p2Board : newState.p1Board;
-      if (currentBoard[targetRow][targetColumn] === 0) {
-        // newState.lastMove = position;
-        // if (isHit(board, position)) currentBoard[targetRow][targetColumn] = 100;
-        // else
-        currentBoard[targetRow][targetColumn] = 10;
-        newState.isPlayer1Turn = !newState.isPlayer1Turn;
-      }
+      if (this.isHit(currentBoard, position)) {
+        debugger;
+        currentBoard[targetRow][targetColumn] = 100;
+      } else currentBoard[targetRow][targetColumn] = 10;
+
+      newState.isPlayer1Turn = !newState.isPlayer1Turn;
       return newState;
     });
     // this.checkWin();
+  };
+
+  isHit = (board, position) => {
+    debugger;
+    const square = board[position[0]][position[1]];
+    if (square > 0 && square <= 5) {
+      debugger;
+      return true;
+    } else return false;
+
+    // debugger;
+    // board.forEach((row, rowIndex) => {
+    //   debugger;
+    //   row.forEach((square, columnIndex) => {
+    //     debugger;
+    //     if (square > 0 && square <= 5) {
+    //       debugger;
+    //       return true;
+    //     }
+    //   });
+    // });
+    // return false;
   };
 
   // checkWin = () => {

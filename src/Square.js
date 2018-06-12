@@ -16,6 +16,8 @@ class Square extends Component {
 
     let color;
     if (this.props.value > 0) color = '#2C3539';
+    if (this.props.value === 10) color = 'blue';
+    if (this.props.value === 100) color = 'red';
     // if (this.props.value === 2) color = 'yellow';
     return (
       <StyledDiv
