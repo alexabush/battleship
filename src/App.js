@@ -77,17 +77,46 @@ class App extends Component {
   //   });
 
   render() {
+    let playStatus;
+    switch (this.state.winStatus) {
+    case 0:
+      playStatus = 'Keep Playing!';
+      break;
+    case 1:
+      playStatus = 'Player 1 Wins!';
+      break;
+    case 2:
+      playStatus = 'Player 2 Wins!';
+      break;
+    case 3:
+      playStatus = 'Stalemate!';
+      break;
+    }
     return (
       <div className="App text-center">
         <h1>Battleship</h1>
         <Board
-          board={this.state.board}
+          board={this.state.p1Board}
           // squareClicked={this.squareClicked}
           // currentTurn={this.state.isPlayer1Turn}
           // winStatus={this.state.winStatus}
           // playAgain={this.playAgain}
           // lastMove={this.state.lastMove}
         />
+        <p>Space</p>
+        <Board
+          board={this.state.p2Board}
+          // squareClicked={this.squareClicked}
+          // currentTurn={this.state.isPlayer1Turn}
+          // winStatus={this.state.winStatus}
+          // playAgain={this.playAgain}
+          // lastMove={this.state.lastMove}
+        />
+        <p>Ready: {this.state.isPlayer1Turn ? 'Player 1' : 'Player 2'}</p>
+        <p>{playStatus}</p>
+        <button className="btn btn-primary" onClick={this.playAgain}>
+          Play Again?
+        </button>
       </div>
     );
   }

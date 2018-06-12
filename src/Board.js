@@ -40,31 +40,7 @@ class Board extends Component {
       </Row>
     ));
 
-    let playStatus;
-    switch (this.props.winStatus) {
-    case 0:
-      playStatus = 'Keep Playing!';
-      break;
-    case 1:
-      playStatus = 'Player 1 Wins!';
-      break;
-    case 2:
-      playStatus = 'Player 2 Wins!';
-      break;
-    case 3:
-      playStatus = 'Stalemate!';
-      break;
-    }
-    return (
-      <div>
-        <div>{squares}</div>
-        <p>Ready: {this.props.currentTurn ? 'Player 1' : 'Player 2'}</p>
-        <p>{playStatus}</p>
-        <button className="btn btn-primary" onClick={this.props.playAgain}>
-          Play Again?
-        </button>
-      </div>
-    );
+    return <div>{squares}</div>;
   }
 }
 
