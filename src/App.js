@@ -125,13 +125,13 @@ class App extends Component {
           currentShips
         );
         currentBoard[targetRow][targetColumn] = 100;
+        newState.winStatus = this.checkWin(isPlayer1Turn, newState.ships);
       } else {
         currentBoard[targetRow][targetColumn] = 10;
       }
       newState.isPlayer1Turn = !newState.isPlayer1Turn;
       return newState;
     });
-    // this.checkWin();
   };
 
   isHit = (board, position) => {
@@ -153,7 +153,12 @@ class App extends Component {
     return ships;
   };
 
-  // checkWin = (board, isPlayer1Turn) => {};
+  checkWin = (isPlayer1Turn, ships) => {
+    const isGameOver = ships.every(ship => ship.remainingHits === 0);
+    if (isGameOver && isPlayer1Turn) return 1;
+    if (isGameOver && !isPlayer1Turn) return 2;
+    return 0;
+  };
 
   // playAgain = () =>
   //   this.setState(prevState => {
