@@ -12,6 +12,11 @@ const Row = styled.div`
 
 class Board extends Component {
   render() {
+    let squareClicked = this.props.squareClicked.bind(
+      null,
+      this.props.currentTurn,
+      this.props.boardId
+    );
     let highlight;
     const squares = this.props.board.map((row, rowIndex) => (
       <Row key={rowIndex}>
@@ -32,7 +37,7 @@ class Board extends Component {
               key={column}
               position={position}
               value={square}
-              // squareClicked={this.props.squareClicked}
+              squareClicked={squareClicked}
               // highlight={highlight}
             />
           );

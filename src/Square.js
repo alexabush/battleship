@@ -15,14 +15,17 @@ class Square extends Component {
     else border = '1px solid black';
 
     let color;
-    if (this.props.value === 1) color = 'red';
-    if (this.props.value === 2) color = 'yellow';
+    if (this.props.value > 0) color = '#2C3539';
+    // if (this.props.value === 2) color = 'yellow';
     return (
       <StyledDiv
         color={color}
         border={border}
-        // onClick={() => this.props.squareClicked(this.props.position)}
-      />
+        onClick={() => this.props.squareClicked(this.props.position)}
+      >
+        <p>{this.props.position}</p>
+        {/* <p>{this.props.value}</p> */}
+      </StyledDiv>
     );
   }
 }
