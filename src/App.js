@@ -3,13 +3,18 @@ import Board from './Board';
 import './App.css';
 
 const SHIPS = [
-  { Carrier: 5 },
-  { Battleship: 4 },
-  { Destroyer: 3 },
-  { Submarine: 3 },
-  { 'Patrol Boat': 2 }
+  { name: 'Carrier', num: 5, remainingHits: 5 },
+  { name: 'Battleship', num: 4, remainingHits: 4 },
+  { name: 'Destroyer', num: 3, remainingHits: 3 },
+  { name: 'Submarine', num: 3.5, remainingHits: 3 },
+  { name: 'Patrol Boat', num: 2, remainingHits: 2 }
 ];
 
+const BOARD = Array.from({ length: 10 }, val => {
+  return Array.from({ length: 10 }, val => 0);
+});
+
+//refactor so I get a deep copy but don't need to copy and paste
 const DEFAULT_STATE = {
   winStatus: 0,
   p1Board: Array.from({ length: 10 }, val => {
@@ -18,7 +23,14 @@ const DEFAULT_STATE = {
   p2Board: Array.from({ length: 10 }, val => {
     return Array.from({ length: 10 }, val => 0);
   }),
-  ships: [
+  p1Ships: [
+    { name: 'Carrier', num: 5, remainingHits: 5 },
+    { name: 'Battleship', num: 4, remainingHits: 4 },
+    { name: 'Destroyer', num: 3, remainingHits: 3 },
+    { name: 'Submarine', num: 3.5, remainingHits: 3 },
+    { name: 'Patrol Boat', num: 2, remainingHits: 2 }
+  ],
+  p2Ships: [
     { name: 'Carrier', num: 5, remainingHits: 5 },
     { name: 'Battleship', num: 4, remainingHits: 4 },
     { name: 'Destroyer', num: 3, remainingHits: 3 },
@@ -102,7 +114,9 @@ class App extends Component {
         return prevState;
       const newState = { ...prevState };
       const currentBoard = isPlayer1Turn ? newState.p2Board : newState.p1Board;
-      const currentShips = [...newState.ships];
+      const currentShips = isPlayer1Turn
+        ? [...newState.p2Ships]
+        : [...newState.p1Ships];
       if (this.isHit(currentBoard, position)) {
         console.log('isHit');
         newState.ships = this.getUpdatedShips(
@@ -131,42 +145,15 @@ class App extends Component {
   getUpdatedShips = (board, position, ships) => {
     console.log('in processHit');
     const shipNum = board[position[0]][position[1]];
-    const targetShip = ships.filter(ship => ship.num === shipNum);
-    //use findIndex
-    //developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
-    // https:
-    debugger;
-    targetShip.remainingHits -= 1;
-    if (targetShip.remainingHits <= 0) {
+    const shipIndex = ships.findIndex(ship => ship.num === shipNum);
+    ships[shipIndex].remainingHits -= 1;
+    if (ships[shipIndex].remainingHits <= 0) {
       console.log('ship destroyed');
     }
     return ships;
   };
 
-  // checkWin = () => {
-  //   this.setState(prevState => {
-  //     if (prevState.winStatus !== 0) return prevState;
-  //     const newState = { ...prevState };
-  //     const currentBoard = newState.board;
-  //     let p1Wins,
-  //       p2Wins = false;
-  //     const columns = Array.from({ length: currentBoard.length }, val => []);
-  //     const diagonals = Array.from({ length: 24 }, val => []);
-
-  //     currentBoard.forEach((row, rowIndex) => {
-  //       if (isConnectFour(row, 1)) p1Wins = true;
-  //       if (isConnectFour(row, 2)) p2Wins = true;
-
-  //       columns.forEach(column => {
-  //         if (isConnectFour(column, 1)) p1Wins = true;
-  //         if (isConnectFour(column, 2)) p2Wins = true;
-  //       });
-  //       if (p1Wins) newState.winStatus = 1;
-  //       if (p2Wins) newState.winStatus = 2;
-  //       return newState;
-  //     });
-  //   });
-  // };
+  // checkWin = (board, isPlayer1Turn) => {};
 
   // playAgain = () =>
   //   this.setState(prevState => {
