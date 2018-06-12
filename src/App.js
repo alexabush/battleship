@@ -102,13 +102,18 @@ class App extends Component {
         return prevState;
       const newState = { ...prevState };
       const currentBoard = isPlayer1Turn ? newState.p2Board : newState.p1Board;
+      const currentShips = [...newState.ships];
       if (this.isHit(currentBoard, position)) {
         console.log('isHit');
-        this.processHit(currentBoard, position);
-        debugger;
+        newState.ships = this.getUpdatedShips(
+          currentBoard,
+          position,
+          currentShips
+        );
         currentBoard[targetRow][targetColumn] = 100;
-      } else currentBoard[targetRow][targetColumn] = 10;
-
+      } else {
+        currentBoard[targetRow][targetColumn] = 10;
+      }
       newState.isPlayer1Turn = !newState.isPlayer1Turn;
       return newState;
     });
@@ -123,19 +128,19 @@ class App extends Component {
     } else return false;
   };
 
-  processHit = (board, position) => {
+  getUpdatedShips = (board, position, ships) => {
     console.log('in processHit');
     const shipNum = board[position[0]][position[1]];
-    this.setState(prevState => {
-      debugger;
-      const newShips = [...prevState.ships];
-      const targetShip = newShips.filter(ship => ship.num === shipNum);
-      newShips[targetShip].remainingHits -= 1;
-      if (newShips[targetShip].remainingHits <= 0) {
-        console.log('ship destroyed');
-      }
-      return { ships: newShips };
-    });
+    const targetShip = ships.filter(ship => ship.num === shipNum);
+    //use findIndex
+    //developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+    // https:
+    debugger;
+    targetShip.remainingHits -= 1;
+    if (targetShip.remainingHits <= 0) {
+      console.log('ship destroyed');
+    }
+    return ships;
   };
 
   // checkWin = () => {
