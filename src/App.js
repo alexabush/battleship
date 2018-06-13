@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Board from './Board';
+import ShipsRemaining from './ShipsRemaining';
 import './App.css';
 
 const BoardsContainer = styled.div`
@@ -222,6 +223,7 @@ class App extends Component {
               currentTurn={this.state.isPlayer1Turn}
               playAgain={this.playAgain}
             />
+            <ShipsRemaining ships={this.state.p1Ships} />
           </BoardDiv>
 
           <BoardDiv>
@@ -233,6 +235,7 @@ class App extends Component {
               currentTurn={this.state.isPlayer1Turn}
               playAgain={this.playAgain}
             />
+            <ShipsRemaining ships={this.state.p2Ships} />
           </BoardDiv>
         </BoardsContainer>
       </div>
