@@ -163,13 +163,15 @@ class App extends Component {
     return 0;
   };
 
-  playAgain = () =>
+  playAgain = () => {
     this.setState(prevState => {
       const newState = JSON.parse(JSON.stringify(DEFAULT_STATE));
       newState.isPlayer1Start = !prevState.isPlayer1Start;
       newState.isPlayer1Turn = newState.isPlayer1Start;
       return newState;
     });
+    this.setupBoard();
+  };
 
   render() {
     let playStatus;
