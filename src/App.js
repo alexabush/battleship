@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import Board from './Board';
 import './App.css';
+
+const BoardsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+`;
+
+const BoardDiv = styled.div`
+  padding: 0 50px;
+`;
+
+const GameStatusDiv = styled.div`
+  /* padding: 0 50px; */
+`;
 
 const SHIPS = [
   { name: 'Carrier', num: 5, remainingHits: 5 },
@@ -189,26 +205,36 @@ class App extends Component {
     return (
       <div className="App text-center">
         <h1>Battleship</h1>
-        <Board
-          board={this.state.p1Board}
-          boardId={1}
-          squareClicked={this.squareClicked}
-          currentTurn={this.state.isPlayer1Turn}
-          playAgain={this.playAgain}
-        />
-        <p>Space</p>
-        <Board
-          board={this.state.p2Board}
-          boardId={2}
-          squareClicked={this.squareClicked}
-          currentTurn={this.state.isPlayer1Turn}
-          playAgain={this.playAgain}
-        />
-        <p>Ready: {this.state.isPlayer1Turn ? 'Player 1' : 'Player 2'}</p>
-        <p>{playStatus}</p>
-        <button className="btn btn-primary" onClick={this.playAgain}>
-          Play Again?
-        </button>
+        <GameStatusDiv>
+          <p>Your turn: {this.state.isPlayer1Turn ? 'Player 1' : 'Player 2'}</p>
+          <p>Game Status: {playStatus}</p>
+          <button className="btn btn-primary" onClick={this.playAgain}>
+            Play Again?
+          </button>
+        </GameStatusDiv>
+        <BoardsContainer>
+          <BoardDiv>
+            <h2>Player 1 Ships</h2>
+            <Board
+              board={this.state.p1Board}
+              boardId={1}
+              squareClicked={this.squareClicked}
+              currentTurn={this.state.isPlayer1Turn}
+              playAgain={this.playAgain}
+            />
+          </BoardDiv>
+
+          <BoardDiv>
+            <h2>Player 2 Ships</h2>
+            <Board
+              board={this.state.p2Board}
+              boardId={2}
+              squareClicked={this.squareClicked}
+              currentTurn={this.state.isPlayer1Turn}
+              playAgain={this.playAgain}
+            />
+          </BoardDiv>
+        </BoardsContainer>
       </div>
     );
   }

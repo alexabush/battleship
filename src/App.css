@@ -3,7 +3,11 @@
   padding: 0;
 }
 
-div {
-  margin: 0;
-  padding: 0;
+.App {
+  font-size: 18px;
+}
+
+h2 {
+  margin-top: 0;
+  padding-top: 0;
 }
