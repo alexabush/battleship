@@ -110,11 +110,12 @@ class App extends Component {
     //we're assuming state has been set to DEFAULT_STATE
     console.log('in setShips');
     this.setState(prevState => {
-      const newState = { ...prevState };
-      const newp1Board = [...newState.p1Board];
-      const newp2Board = [...newState.p2Board];
-      let continueLoop = true;
+      // const newState = { ...prevState };
+      const newp1Board = [...prevState.p1Board];
+      const newp2Board = [...prevState.p2Board];
       this.state.p1Ships.forEach(ship => {
+        let continueLoop = true;
+        console.log('ship name,', ship.name);
         while (continueLoop) {
           console.log('in setShip while loop');
           const randomRow = randomNum(0, 8);
@@ -122,25 +123,42 @@ class App extends Component {
           const isHorizontal = randomNum(0, 1) > 0;
           const shipLength = ship.remainingHits;
           if (isHorizontal) {
-            if (randomColumn + shipLength < 10) {
+            if (randomColumn + shipLength >= 10) {
               //change [randomRow, randomColumn] through randomColumn + shipLength to ship.num
+              let isPathClear = true;
               for (let i = randomColumn; i < randomColumn + shipLength; i++) {
-                newp1Board[randomRow][i] = ship.num;
+                if (newp1Board[randomRow][i] !== 0) isPathClear = false;
               }
-              continueLoop = false;
+              if (isPathClear) {
+                for (let i = randomColumn; i < randomColumn + shipLength; i++) {
+                  newp1Board[randomRow][i] = ship.num;
+                }
+                console.log('exiting while loop');
+                continueLoop = false;
+              }
+              console.log('repeating while loop');
             }
-            break;
           } else {
             if (randomRow + shipLength < 10) {
               //change [randomRow, randomColumn] through randomRow + shipLength to ship.num
+              let isPathClear = true;
               for (let i = randomRow; i < randomRow + shipLength; i++) {
-                newp1Board[i][randomColumn] = ship.num;
+                if (newp1Board[i][randomColumn] !== 0) isPathClear = false;
               }
-              continueLoop = false;
+              if (isPathClear) {
+                for (let i = randomRow; i < randomRow + shipLength; i++) {
+                  newp1Board[i][randomColumn] = ship.num;
+                }
+                console.log('exiting while loop');
+                continueLoop = false;
+              }
+              console.log('continuing while loop');
             }
           }
         }
+        debugger;
       });
+      return { p1Board: newp1Board, p2Board: newp2Board };
     });
   };
 
