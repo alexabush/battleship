@@ -39,7 +39,7 @@ const DEFAULT_STATE = {
   ]
 };
 
-//includes start and end in range
+//includes start, excludes end
 function randomNum(start, end) {
   const num = Math.floor(Math.random() * end) + start;
   return num;
@@ -57,109 +57,55 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setShips();
-    // this.setState(prevState => {
-    //   const board = { ...prevState }.p1Board;
-    //   board.forEach((row, rowIndex) => {
-    //     row.forEach((square, columnIndex) => {
-    //       if (rowIndex === 1 && columnIndex < 5) {
-    //         board[rowIndex][columnIndex] = 5;
-    //       }
-    //       if (rowIndex === 3 && columnIndex < 4) {
-    //         board[rowIndex][columnIndex] = 4;
-    //       }
-    //       if (rowIndex === 5 && columnIndex < 3) {
-    //         board[rowIndex][columnIndex] = 3;
-    //       }
-    //       if (rowIndex === 7 && columnIndex < 3) {
-    //         board[rowIndex][columnIndex] = 3.5;
-    //       }
-    //       if (rowIndex === 9 && columnIndex < 2) {
-    //         board[rowIndex][columnIndex] = 2;
-    //       }
-    //     });
-    //   });
-    //   return { p1Board: board };
-    // });
-    // this.setState(prevState => {
-    //   const board = { ...prevState }.p2Board;
-    //   board.forEach((row, rowIndex) => {
-    //     row.forEach((square, columnIndex) => {
-    //       if (columnIndex === 1 && rowIndex < 5) {
-    //         board[rowIndex][columnIndex] = 5;
-    //       }
-    //       if (columnIndex === 3 && rowIndex < 4) {
-    //         board[rowIndex][columnIndex] = 4;
-    //       }
-    //       if (columnIndex === 5 && rowIndex < 3) {
-    //         board[rowIndex][columnIndex] = 3;
-    //       }
-    //       if (columnIndex === 7 && rowIndex < 3) {
-    //         board[rowIndex][columnIndex] = 3.5;
-    //       }
-    //       if (columnIndex === 9 && rowIndex < 2) {
-    //         board[rowIndex][columnIndex] = 2;
-    //       }
-    //     });
-    //   });
-    //   return { p2Board: board };
-    // });
+    this.setupBoard();
   }
 
-  setShips = () => {
+  setupBoard = () => {
     //we're assuming state has been set to DEFAULT_STATE
-    console.log('in setShips');
+    console.log('in setupBoard');
     this.setState(prevState => {
-      // const newState = { ...prevState };
       const newp1Board = [...prevState.p1Board];
       const newp2Board = [...prevState.p2Board];
-      this.state.p1Ships.forEach(ship => {
-        let continueLoop = true;
-        console.log('ship name,', ship.name);
-        while (continueLoop) {
-          console.log('in setShip while loop');
-          const randomRow = randomNum(0, 8);
-          const randomColumn = randomNum(0, 8);
-          const isHorizontal = randomNum(0, 1) > 0;
-          const shipLength = ship.remainingHits;
-          if (isHorizontal) {
-            if (randomColumn + shipLength >= 10) {
-              //change [randomRow, randomColumn] through randomColumn + shipLength to ship.num
-              let isPathClear = true;
-              for (let i = randomColumn; i < randomColumn + shipLength; i++) {
-                if (newp1Board[randomRow][i] !== 0) isPathClear = false;
-              }
-              if (isPathClear) {
-                for (let i = randomColumn; i < randomColumn + shipLength; i++) {
-                  newp1Board[randomRow][i] = ship.num;
-                }
-                console.log('exiting while loop');
-                continueLoop = false;
-              }
-              console.log('repeating while loop');
-            }
-          } else {
-            if (randomRow + shipLength < 10) {
-              //change [randomRow, randomColumn] through randomRow + shipLength to ship.num
-              let isPathClear = true;
-              for (let i = randomRow; i < randomRow + shipLength; i++) {
-                if (newp1Board[i][randomColumn] !== 0) isPathClear = false;
-              }
-              if (isPathClear) {
-                for (let i = randomRow; i < randomRow + shipLength; i++) {
-                  newp1Board[i][randomColumn] = ship.num;
-                }
-                console.log('exiting while loop');
-                continueLoop = false;
-              }
-              console.log('continuing while loop');
-            }
-          }
-        }
-        debugger;
-      });
+      this.addShipsToBoard(newp1Board, this.state.p1Ships);
+      this.addShipsToBoard(newp2Board, this.state.p2Ships);
       return { p1Board: newp1Board, p2Board: newp2Board };
     });
+  };
+
+  addShipsToBoard = (board, ships) => {
+    ships.forEach(ship => {
+      let continueLoop = true;
+      while (continueLoop) {
+        const randomRow = randomNum(0, 8);
+        const randomColumn = randomNum(0, 8);
+        const isHorizontal = randomNum(0, 2) > 0;
+        const shipLength = ship.remainingHits;
+        if (isHorizontal) {
+          if (randomColumn + shipLength >= 10) continue;
+          let isPathClear = true;
+          for (let i = randomColumn; i < randomColumn + shipLength; i++) {
+            if (board[randomRow][i] !== 0) isPathClear = false;
+          }
+          if (!isPathClear) continue;
+          for (let i = randomColumn; i < randomColumn + shipLength; i++) {
+            board[randomRow][i] = ship.num;
+          }
+          continueLoop = false;
+        } else {
+          if (randomRow + shipLength >= 10) continue;
+          let isPathClear = true;
+          for (let i = randomRow; i < randomRow + shipLength; i++) {
+            if (board[i][randomColumn] !== 0) isPathClear = false;
+          }
+          if (!isPathClear) continue;
+          for (let i = randomRow; i < randomRow + shipLength; i++) {
+            board[i][randomColumn] = ship.num;
+          }
+          continueLoop = false;
+        }
+      }
+    });
+    return board;
   };
 
   squareClicked = (isPlayer1Turn, boardId, position) => {
@@ -267,30 +213,3 @@ class App extends Component {
 }
 
 export default App;
-
-//this needs to be tested more rigorously
-// export const isConnectFour = (arr, player) => {
-//   let maxCount = 0;
-//   let counter = 0;
-//   let current;
-//   //need to see if there is four in a row of the player's number
-//   for (let i = 0; i < arr.length; i++) {
-//     if (arr[i] === player) {
-//       current = player;
-//       counter++;
-//     } else {
-//       current = arr[i];
-//       if (maxCount < counter) maxCount = counter;
-//       counter = 0;
-//     }
-//   }
-//   if (maxCount < counter) maxCount = counter;
-//   return maxCount >= 4;
-// };
-
-// ''`
-// add ships to board randomly
-// make sure there is no overlap
-
-// need to make a randomizer of some sort
-// ```;
