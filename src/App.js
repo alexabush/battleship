@@ -222,6 +222,7 @@ class App extends Component {
               squareClicked={this.squareClicked}
               currentTurn={this.state.isPlayer1Turn}
               playAgain={this.playAgain}
+              winStatus={this.state.winStatus}
             />
             <ShipsRemaining ships={this.state.p1Ships} />
           </BoardDiv>
@@ -234,6 +235,7 @@ class App extends Component {
               squareClicked={this.squareClicked}
               currentTurn={this.state.isPlayer1Turn}
               playAgain={this.playAgain}
+              winStatus={this.state.winStatus}
             />
             <ShipsRemaining ships={this.state.p2Ships} />
           </BoardDiv>
