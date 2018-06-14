@@ -12,7 +12,7 @@ const Row = styled.div`
 
 class Board extends Component {
   render() {
-    const showBoats = this.props.boardId === 1 && this.props.winStatus === 1;
+    const showBoats = this.props.boardId === this.props.winStatus;
     let squareClicked = this.props.squareClicked.bind(
       null,
       this.props.currentTurn,

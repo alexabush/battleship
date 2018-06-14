@@ -34,6 +34,7 @@ const BOARD = Array.from({ length: 10 }, val => {
 //refactor so I get a deep copy but don't need to copy and paste
 const DEFAULT_STATE = {
   winStatus: 0,
+  hitStatus: 'No shots fired!',
   p1Board: Array.from({ length: 10 }, val => {
     return Array.from({ length: 10 }, val => 0);
   }),
@@ -139,6 +140,7 @@ class App extends Component {
         : [...newState.p1Ships];
       if (this.isHit(currentBoard, position)) {
         console.log('isHit');
+        newState.hitStatus = 'Hit!';
         newState.ships = this.getUpdatedShips(
           currentBoard,
           position,
@@ -147,6 +149,7 @@ class App extends Component {
         currentBoard[targetRow][targetColumn] = 100;
         newState.winStatus = this.checkWin(isPlayer1Turn, newState.ships);
       } else {
+        newState.hitStatus = 'Miss!';
         currentBoard[targetRow][targetColumn] = 10;
       }
       newState.isPlayer1Turn = !newState.isPlayer1Turn;
@@ -168,6 +171,11 @@ class App extends Component {
     const shipIndex = ships.findIndex(ship => ship.num === shipNum);
     ships[shipIndex].remainingHits -= 1;
     if (ships[shipIndex].remainingHits <= 0) {
+      this.setState(prevState => {
+        const newState = { ...prevState };
+        newState.hitStatus = `${ships[shipIndex].name} sunk!`;
+        return newState;
+      });
       console.log('ship destroyed');
     }
     return ships;
@@ -209,6 +217,7 @@ class App extends Component {
         <GameStatusDiv>
           <p>Your turn: {this.state.isPlayer1Turn ? 'Player 1' : 'Player 2'}</p>
           <p>Game Status: {playStatus}</p>
+          <p>Hit: {this.state.hitStatus}</p>
           <button className="btn btn-primary" onClick={this.playAgain}>
             Play Again?
           </button>
@@ -226,7 +235,6 @@ class App extends Component {
             />
             <ShipsRemaining ships={this.state.p1Ships} />
           </BoardDiv>
-
           <BoardDiv>
             <h2>Player 2 Ships</h2>
             <Board
