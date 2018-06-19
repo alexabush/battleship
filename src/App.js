@@ -134,7 +134,13 @@ class App extends Component {
       if ((boardId === 1 && isPlayer1Turn) || (boardId === 2 && !isPlayer1Turn))
         return prevState;
       const newState = { ...prevState };
-      const currentBoard = isPlayer1Turn ? newState.p2Board : newState.p1Board;
+      const currentBoard = isPlayer1Turn
+        ? [...newState.p2Board]
+        : [...newState.p1Board];
+      if (currentBoard[targetRow][targetColumn] >= 10) {
+        debugger;
+        return newState;
+      }
       const currentShips = isPlayer1Turn
         ? [...newState.p2Ships]
         : [...newState.p1Ships];
