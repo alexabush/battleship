@@ -15,7 +15,9 @@ const BoardDiv = styled.div`
   padding: 0 50px;
 `;
 
-const GameStatusDiv = styled.div``;
+const GameStatusDiv = styled.div`
+  /* padding: 0 50px; */
+`;
 
 const SHIPS = [
   { name: 'Carrier', num: 5, remainingHits: 5 },
@@ -77,6 +79,8 @@ class App extends Component {
   }
 
   setupBoard = () => {
+    //we're assuming state has been set to DEFAULT_STATE
+    console.log('in setupBoard');
     this.setState(prevState => {
       const newp1Board = [...prevState.p1Board];
       const newp2Board = [...prevState.p2Board];
@@ -123,6 +127,7 @@ class App extends Component {
   };
 
   squareClicked = (isPlayer1Turn, boardId, position) => {
+    console.log('in square clicked');
     const [targetRow, targetColumn] = position;
     this.setState(prevState => {
       if (prevState.winStatus !== 0) return prevState;
@@ -132,7 +137,10 @@ class App extends Component {
       const currentBoard = isPlayer1Turn
         ? [...newState.p2Board]
         : [...newState.p1Board];
-      if (currentBoard[targetRow][targetColumn] >= 10) return newState;
+      if (currentBoard[targetRow][targetColumn] >= 10) {
+        debugger;
+        return newState;
+      }
       const currentShips = isPlayer1Turn
         ? [...newState.p2Ships]
         : [...newState.p1Ships];
