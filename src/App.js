@@ -19,19 +19,6 @@ const GameStatusDiv = styled.div`
   /* padding: 0 50px; */
 `;
 
-const SHIPS = [
-  { name: 'Carrier', num: 5, remainingHits: 5 },
-  { name: 'Battleship', num: 4, remainingHits: 4 },
-  { name: 'Destroyer', num: 3, remainingHits: 3 },
-  { name: 'Submarine', num: 3.5, remainingHits: 3 },
-  { name: 'Patrol Boat', num: 2, remainingHits: 2 }
-];
-
-const BOARD = Array.from({ length: 10 }, val => {
-  return Array.from({ length: 10 }, val => 0);
-});
-
-//refactor so I get a deep copy but don't need to copy and paste
 const DEFAULT_STATE = {
   winStatus: 0,
   hitStatus: 'No shots fired!',
@@ -64,15 +51,11 @@ function randomNum(start, end) {
 }
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    //deep clone
-    this.state = {
-      ...JSON.parse(JSON.stringify(DEFAULT_STATE)),
-      isPlayer1Start: true,
-      isPlayer1Turn: true
-    };
-  }
+  state = {
+    ...JSON.parse(JSON.stringify(DEFAULT_STATE)),
+    isPlayer1Start: true,
+    isPlayer1Turn: true
+  };
 
   componentDidMount() {
     this.setupBoard();
@@ -215,6 +198,9 @@ class App extends Component {
         break;
       case 2:
         playStatus = 'Player 2 Wins!';
+        break;
+      default:
+        playStatus = "You're both winners";
         break;
     }
     return (
