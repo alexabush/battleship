@@ -45,8 +45,8 @@ const DEFAULT_STATE = {
 };
 
 //includes start, excludes end
-function randomNum(start, end) {
-  const num = Math.floor(Math.random() * end) + start;
+export function randomNum(start, end) {
+  const num = Math.floor(Math.random() * (end - start)) + start;
   return num;
 }
 
@@ -121,14 +121,12 @@ class App extends Component {
         ? [...newState.p2Board]
         : [...newState.p1Board];
       if (currentBoard[targetRow][targetColumn] >= 10) {
-        debugger;
         return newState;
       }
       const currentShips = isPlayer1Turn
         ? [...newState.p2Ships]
         : [...newState.p1Ships];
       if (this.isHit(currentBoard, position)) {
-        console.log('isHit');
         newState.hitStatus = 'Hit!';
         newState.ships = this.getUpdatedShips(
           currentBoard,
@@ -209,7 +207,7 @@ class App extends Component {
         <GameStatusDiv>
           <p>Your turn: {this.state.isPlayer1Turn ? 'Player 1' : 'Player 2'}</p>
           <p>Game Status: {playStatus}</p>
-          <p>Hit: {this.state.hitStatus}</p>
+          <p>Hit Status: {this.state.hitStatus}</p>
           <button className="btn btn-primary" onClick={this.playAgain}>
             Play Again?
           </button>
